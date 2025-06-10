@@ -1,0 +1,185 @@
+
+#container {
+    height: 320px;
+    width: 325px;
+    padding: 10px;
+    display: inline-flex;
+}
+hr{
+    width: 150px;
+    align-self: center;
+}
+
+h1 {
+    font-size: 20px;
+    margin-bottom: 10px;
+    font-family: 'Montserrat', sans-serif;
+    text-align: center;
+    color: #2C4B8B;
+}
+span {
+    color: #2C4B8B
+}
+
+.button1 {
+    padding: 10px;
+    background-color: #2C4B8B;
+    font-family: 'Montserrat', sans-serif;
+    color: #fff;
+    font-size: 12px;
+    margin-left: 10px;
+    margin-right: 10px;
+    border: none;
+    cursor: pointer;
+    border-radius: 8px;
+    margin-bottom: 10px;
+    width: 12rem;
+    align-content: center;
+    text-align: center;
+}
+.button2 {
+    padding: 10px;
+    font-size: 12px;
+    background-color: #C10076;
+    font-family: 'Montserrat', sans-serif;
+    color: #fff;
+    border: none;
+    cursor: pointer;
+    border-radius: 8px;
+    margin-bottom: 10px;
+    width: 12rem;
+    align-content: center;
+    text-align: center;
+
+}
+.button3 {
+    padding: 10px;
+    font-size: 12px;
+    background-color: #FF5900;
+    font-family: 'Montserrat', sans-serif;
+    color: #fff;
+    border: none;
+    cursor: pointer;
+    border-radius: 8px;
+    margin-bottom: 10px;
+    width: 12rem;
+    align-content: center;
+    text-decoration: none;
+    text-align: center;
+
+}
+
+.buttonLogin {
+    padding: 10px;
+    background-color: #2C4B8B;
+    font-family: 'Montserrat', sans-serif;
+    color: #fff;
+    font-size: 12px;
+    margin-left: 100px;
+    margin-right: 10px;
+    margin-top: 20px;
+    border: none;
+    cursor: pointer;
+    border-radius: 8px;
+    margin-bottom: 10px;
+    width: 12rem;
+    align-content: center;
+    text-align: center;
+}
+.buttonLogout {
+    padding: 10px;
+    background-color: #2C4B8B;
+    font-family: 'Montserrat', sans-serif;
+    color: #fff;
+    font-size: 12px;
+    margin-left: 10px;
+    margin-right: 10px;
+    border: none;
+    cursor: pointer;
+    border-radius: 8px;
+    margin-bottom: 10px;
+    width: 12rem;
+    align-content: center;
+    text-align: center;
+}
+.encoleBtn {
+    padding: 10px;
+    background-color: #2C4B8B;
+    font-family: 'Montserrat', sans-serif;
+    color: #fff;
+    font-size: 12px;
+    margin-left: 300px;
+    margin-right: 10px;
+    margin-top: 50px;
+    border: none;
+    cursor: pointer;
+    border-radius: 8px;
+    margin-bottom: 10px;
+    width: 12rem;
+    align-content: center;
+    text-align: center;
+}
+
+.button1:hover {
+    background-color: #013f82;
+}
+.button2:hover {
+    background-color:  #8c0257;
+}
+.button3:hover {
+    background-color:  #a63c03;
+}
+.encoleBtn:hover {
+    background-color: #013f82;
+}
+.buttonLogin:hover {
+    background-color: #013f82;
+}
+.buttonLogout:hover {
+    background-color: #013f82;
+}
+.reserva-info {
+    display: none;
+    padding: 15px;
+}
+a {
+    text-decoration: none;
+    color: #fff;
+}
+.pasajeroPorTipo p {
+        text-transform: lowercase;
+        font-size: 14px;
+        font-family:Arial,Helvetica,sans-serif;
+        color:#686868;
+    }
+    
+.pasajeroPorTipo p::first-letter {
+        text-transform: uppercase;
+    }
+
+   
+.acc > :not([hidden]) ~ :not([hidden]) {
+        --tw-divide-y-reverse: 0;
+        border-top-width: calc(1px * calc(1 - var(--tw-divide-y-reverse)));
+        border-bottom-width: calc(1px * var(--tw-divide-y-reverse));
+      }
+    
+.ach > :not([hidden]) ~ :not([hidden]) {
+        --tw-divide-opacity: 1;
+        border-color: rgb(209 213 219 / var(--tw-divide-opacity));
+      }
+.acg > :not([hidden]) ~ :not([hidden]) {
+        --tw-divide-opacity: 1;
+        border-color: rgb(229 231 235 / var(--tw-divide-opacity));
+      }
+
+.bbm {
+        --tw-shadow: 0 1px 2px 0 rgb(0 0 0 / 0.05);
+        --tw-shadow-colored: 0 1px 2px 0 var(--tw-shadow-color);
+        box-shadow: var(--tw-ring-offset-shadow, 0 0 #0000), var(--tw-ring-shadow, 0 0 #0000), var(--tw-shadow);
+      }
+.bir:hover {
+        --tw-bg-opacity: 1;
+        background-color: rgb(99 102 241 / var(--tw-bg-opacity));
+      }
+

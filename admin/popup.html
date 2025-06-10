@@ -1,0 +1,104 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Administrador</title>
+    <link rel="stylesheet" href="popup.css">
+    <link rel="stylesheet" href="complied.css">
+    <script src="/js/tailwindscss.js"></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link
+        href="https://fonts.googleapis.com/css2?family=Montserrat:ital,wght@0,100..900;1,100..900&family=Poppins:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap"
+        rel="stylesheet">
+</head>
+
+<body>
+    <div class="container lx ut yr aat adj afu alm arj font-['Montserrat']" id="container">
+        <div class="lx nl ur yz p-0 mb-0 self-center">
+            <img class="og tm w-[50px] h-[50px]" src="/icon.png" alt="Jetmar Viajes" />
+            <span class="ml-[8px] mt-[5px] text-[14px] font-['Montserrat'] awb awf awo">Administrador ToolBox</span>
+        </div>
+        
+        <div class="relative ml-[15px] mr-[15px]">
+            <div id="menuButton"
+                class="text-center hover:bg-slate-100 w-full border-b inline-flex grid grid-cols-2 gap-48 pb-[10px] pt-[10px]">
+                <button type="button" class="m-2 inline-flex items-center text-sm font-semibold leading-6 text-gray-900"
+                    aria-expanded="false">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none"
+                        stroke="#2C4B8B" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"
+                        class="icon icon-tabler icons-tabler-outline icon-tabler-building-airport brq oc se ur mr-[20px]">
+                        <path stroke="none" d="M0 0h24v24H0z" fill="none" />
+                        <path
+                            d="M3.59 7h8.82a1 1 0 0 1 .902 1.433l-1.44 3a1 1 0 0 1 -.901 .567h-5.942a1 1 0 0 1 -.901 -.567l-1.44 -3a1 1 0 0 1 .901 -1.433" />
+                        <path d="M6 7l-.78 -2.342a.5 .5 0 0 1 .473 -.658h4.612a.5 .5 0 0 1 .475 .658l-.78 2.342" />
+                        <path d="M8 2v2" />
+                        <path d="M6 12v9h4v-9" />
+                        <path d="M3 21h18" />
+                        <path d="M22 5h-6l-1 -1" />
+                        <path d="M18 3l2 2l-2 2" />
+                        <path d="M10 17h7a2 2 0 0 1 2 2v2" />
+                    </svg>
+                    <span>Administrar</span>
+                </button>
+                <div class="flex items-center">
+                    <svg id="rightIcon" class="h-4 w-4" viewBox="0 0 24 24" fill="#2C4B8B" aria-hidden="true">
+                        <path fill-rule="evenodd"
+                            d="M16.28 11.47a.75.75 0 0 1 0 1.06l-7.5 7.5a.75.75 0 0 1-1.06-1.06L14.69 12 7.72 5.03a.75.75 0 0 1 1.06-1.06l7.5 7.5Z"
+                            clip-rule="evenodd" />
+                    </svg>
+                    <svg id="downIcon" class="h-4 w-4 hidden" viewBox="0 0 24 24" fill="#2C4B8B" aria-hidden="true">
+                        <path fill-rule="evenodd"
+                            d="M12.53 16.28a.75.75 0 0 1-1.06 0l-7.5-7.5a.75.75 0 0 1 1.06-1.06L12 14.69l6.97-6.97a.75.75 0 1 1 1.06 1.06l-7.5 7.5Z"
+                            clip-rule="evenodd" />
+                    </svg>
+                </div>
+            </div>
+            <div id="menuDropdown" class="hidden">
+                <div class="w-screen max-w-md flex-auto overflow-hidden rounded-3xl bg-white text-sm leading-6">
+                    <nav class="lx um yr pl-[20px] pr-[10px] mt-[10px] mb-[20px]">
+                        <ul role="list" class="lx um yr aav">
+                            <li>
+                                <ul role="list" class="ga abo">
+                                <li id="preview">
+                                    <a href="#" class="axs blf big bqe lx aaf adu aqp avz awo awf">
+                                        <svg  xmlns="http://www.w3.org/2000/svg"  width="24"  height="24"  viewBox="0 0 24 24"  fill="none"  
+                                        stroke="currentColor"  stroke-width="2"  stroke-linecap="round"  stroke-linejoin="round"  
+                                        class="icon icon-tabler icons-tabler-outline icon-tabler-eye axo brq oc se ur">
+                                        <path stroke="none" d="M0 0h24v24H0z" fill="none"/>
+                                        <path d="M10 12a2 2 0 1 0 4 0a2 2 0 0 0 -4 0" />
+                                        <path d="M21 12c-2.4 4 -5.4 6 -9 6c-3.6 0 -6.6 -2 -9 -6c2.4 -4 5.4 -6 9 -6c3.6 0 6.6 2 9 6" />
+                                        </svg>
+                                        Pre visualizar
+                                    </a>
+                                </li>
+                                <li id="agregar-entradas">
+                                    <a href="#" class="axs blf big bqe lx aaf adu aqp avz awo awf">
+                                        <svg  xmlns="http://www.w3.org/2000/svg"  width="24"  height="24"  viewBox="0 0 24 24"  fill="none"  
+                                        stroke="currentColor"  stroke-width="2"  stroke-linecap="round"  stroke-linejoin="round"  
+                                        class="icon icon-tabler icons-tabler-outline icon-tabler-pencil-code axo brq oc se ur">
+                                            <path stroke="none" d="M0 0h24v24H0z" fill="none"/>
+                                            <path d="M4 20h4l10.5 -10.5a2.828 2.828 0 1 0 -4 -4l-10.5 10.5v4" />
+                                            <path d="M13.5 6.5l4 4" />
+                                            <path d="M20 21l2 -2l-2 -2" />
+                                            <path d="M17 17l-2 2l2 2" />
+                                        </svg>
+                                        Agregar entradas
+                                    </a>
+                                </li>
+                                </ul>
+                            </li>
+                        </ul>
+                    </nav>
+                </div>
+            </div>
+    </div>
+    <div id="reserva-info" class="reserva-info"></div>
+    <script src="popup.js"></script>
+    <script src="/tailwindscss.js"></script>
+    <script src="sweetalert2.js"></script>
+</body>
+
+</html>
