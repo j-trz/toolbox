@@ -1,67 +1,36 @@
 {
-  "manifest_version": 3,
-  "name": "Jetmar ToolBox",
-  "version": "1.4.2",
-  "description": "Una extensión con múltiples herramientas para el día a día.",
-  "author": "Julian Estefan",
-
-  "side_panel": {
-    "default_path": "popup.html"
-  },
-  
-  "action": {
-    "default_popup": "popup.html",
-    "default_icon": {
-      "16": "icon.png",
-      "32": "icon.png",
-      "48": "icon.png"
+    "manifest_version": 3,
+    "name": "Toolbox Extension",
+    "version": "1.1.0",
+    "description": "Una caja de herramientas personalizable.",
+    "permissions": [
+        "storage",
+        "activeTab"
+    ],
+    "host_permissions": [
+        "https://epoghpspraryorpalkuo.supabase.co/*"
+    ],
+    "action": {
+        "default_icon": {
+            "16": "icons/icon16.png",
+            "48": "icons/icon48.png",
+            "128": "icons/icon128.png"
+        },
+        "default_title": "Mi Toolbox",
+        "default_popup": "src/popup/popup.html"
     },
-    "theme_icons": [
-      {
-        "light": true,
-        "icon": {
-          "16": "icon.png",
-          "32": "icon.png"
+    "background": {
+        "service_worker": "src/background/background.js"
+    },
+    "content_scripts": [
+        {
+            "matches": ["<all_urls>"],
+            "js": ["src/content/content.js"]
         }
-      },
-      {
-        "dark": true,
-        "icon": {
-          "16": "icon-dark.png",
-          "32": "icon-dark.png"
-        }
-      }
-    ]
-  },
-  "icons": {
-    "16": "icon.png",
-    "48": "icon.png",
-    "128": "icon.png"
-  },
-  "background": {
-    "service_worker": "background.js",
-    "type": "module"
-  },
-  
-  "content_scripts": [
-    {
-      "matches": ["https://cm.farelogix.com/*","https://dcwebc.farelogix.com/*","https://www.agency.latamairlines.com/*","https://www.booking7.sellingplatformconnect.amadeus.com/*"],
-      "js": ["content.js"]
+    ],
+    "icons": {
+        "16": "icons/icon16.png",
+        "48": "icons/icon48.png",
+        "128": "icons/icon128.png"
     }
-  ],
-
-  "permissions": [
-    "tabs",
-    "activeTab",
-    "scripting",
-    "storage",
-    "identity",
-    "identity.email",
-    "*://*/*",
-    "webNavigation",
-    "webRequest",
-    "webRequestBlocking",
-    "https://cm.farelogix.com/*", 
-    "https://dcwebc.farelogix.com/*" 
-     ]
 }
