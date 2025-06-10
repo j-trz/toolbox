@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Entradas GDS</title>
+  <script src="/tailwindscss.js"></script>
+  <script src="/js/supabase-js.js"></script>
+
+
+</head>
+<body class="bg-white min-h-screen p-6 font-[Montserrat]">
+  <div class="max-w-4xl mx-auto">
+    <h1 class="text-3xl font-bold mb-4 text-center">Entradas GDS</h1>
+    
+    <div class="flex gap-4 mb-8">
+      <input type="text" id="searchInput" placeholder="Buscar transacción..." class="w-full p-2 border border-gray-300 rounded" />
+      <select id="filterSelect" class="p-2 border border-gray-300 rounded">
+        <option value="all">Todos</option>
+        <option value="sabre">Sabre RED</option>
+        <option value="amadeus">Amadeus</option>
+      </select>
+    </div>
+
+    <div id="transactionList" class="space-y-4"></div>
+  </div>
+
+  <script defer type="module" src="/js/gdsCompare.js"></script>
+
+</body>
+</html>
