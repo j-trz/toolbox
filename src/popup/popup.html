@@ -2,18 +2,33 @@
 <html lang="es">
 <head>
     <meta charset="UTF-8">
+    <link rel="icon" href="/img/Je_logo-01.ico">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Toolbox Popup</title>
+    <title>Jetmar Toolbox</title>
     <link rel="stylesheet" href="popup.css">
+    <link rel="stylesheet" href="complied.css">
+    <script src="/js/supabase-js.js"></script>
+
 </head>
-<body>
-    <header>
-        <h1>Toolbox</h1>
-        <input type="text" id="searchInput" placeholder="Buscar herramienta...">
-    </header>
-    <main id="tools-container">
-        <p id="loading-message">Cargando herramientas...</p>
-    </main>
+<body class="font-['Montserrat']">
+    <div class="container lx ut yr aat adj afu alm arj font-['Montserrat']" id="container">
+        <div class="lx nl ur yz p-0 mb-0 self-center">
+            <img class="og tm w-[50px] h-[50px]" src="icon.png" alt="Jetmar Viajes" />
+            <span class="ml-[8px] mt-[5px] text-[14px] font-['Montserrat'] awb awf awo">Jetmar ToolBox</span>
+        </div>
+        <div class="p-0 mb-0 self-center">
+            <span class="ml-[8px] text-[12px] font-['Montserrat'] awb awf awo axo">Intero producto aéreo 8036</span>
+        </div>
+        <hr>
+
+        <div id="tools-container" class="relative ml-[15px] mr-[15px]">
+            <p id="loading-indicator" class="text-center text-slate-500 p-4">Cargando menú...</p>
+        </div>
+
+        <div id="footer-actions">
+            </div>
+    </div>
     <script type="module" src="popup.js"></script>
+    <script src="../libs/tailwindscss.js"></script>
 </body>
 </html>

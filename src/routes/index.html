@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html lang="es">
+  <head>
+    <link rel="icon" href="/img/Je_logo-01.ico">
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <title>Itinerario de vuelo</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:ital,wght@0,100..900;1,100..900&family=Poppins:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap" rel="stylesheet">
+    
+  </head>
+<body class="font-['Montserrat'] bg-white">
+
+<div class="container mx-auto px-2.5">
+
+    <div class="w-[70%] h-[85px] bg-[#feec00] border-3 border-[#feec00] flex items-center mt-2.5 mb-10 rounded-lg pl-6">
+        <span class="text-[#2c4b8b] text-4xl font-extrabold">
+            Generar Itinerario
+        </span>
+    </div>
+
+    <div class="flex items-start gap-8">
+        <textarea 
+            placeholder="Pegue el itinerario" 
+            class="block w-[600px] p-6 h-40 mb-4 rounded-md border border-gray-300 shadow-sm outline-none focus:border-indigo-300 focus:ring focus:ring-indigo-200 focus:ring-opacity-50"
+            id="input-text"
+        ></textarea>
+        
+        <button 
+            type="button" 
+            class="flex items-center justify-center w-[200px] h-10 px-5 mt-[50px] bg-[rgb(213,33,33)] text-white rounded-md shadow-sm hover:bg-[rgb(158,1,1)] transition-colors" 
+            id="borrarItinerario"
+        >
+            Borrar itinerario 
+            <svg class="ml-2.5" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="20" height="20" fill="white">
+                <path d="M16 1.75V3h5.25a.75.75 0 0 1 0 1.5H2.75a.75.75 0 0 1 0-1.5H8V1.75C8 .784 8.784 0 9.75 0h4.5C15.216 0 16 .784 16 1.75Zm-6.5 0V3h5V1.75a.25.25 0 0 0-.25-.25h-4.5a.25.25 0 0 0-.25.25ZM4.997 6.178a.75.75 0 1 0-1.493.144L4.916 20.92a1.75 1.75 0 0 0 1.742 1.58h10.684a1.75 1.75 0 0 0 1.742-1.581l1.413-14.597a.75.75 0 0 0-1.494-.144l-1.412 14.596a.25.25 0 0 1-.249.226H6.658a.25.25 0 0 1-.249-.226L4.997 6.178Z"></path>
+                <path d="M9.206 7.501a.75.75 0 0 1 .793.705l.5 8.5A.75.75 0 1 1 9 16.794l-.5-8.5a.75.75 0 0 1 .705-.793Zm6.293.793A.75.75 0 1 0 14 8.206l-.5 8.5a.75.75 0 0 0 1.498.088l.5-8.5Z"></path>
+            </svg>
+        </button>
+    </div>
+
+    <div class="mb-20 ml-2.5" role="group" aria-label="Botones de GDS"> 
+        <button type="button" class="py-2 px-4 bg-[#2c4b8b] text-white border border-[#2c4b8b] rounded-md shadow-sm font-['Montserrat'] font-light hover:bg-[#c10076] hover:border-[#c10076] transition-colors focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-[#c10076]" id="btnItinerarioSPRK">Itinerario SPRK</button> 
+        <button type="button" class="py-2 px-4 bg-[#2c4b8b] text-white border border-[#2c4b8b] rounded-md shadow-sm font-['Montserrat'] font-light hover:bg-[#c10076] hover:border-[#c10076] transition-colors focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-[#c10076]" id="btnItinerarioAmadeus">Itinerario Amadeus</button>
+        <button type="button" class="py-2 px-4 bg-[#2c4b8b] text-white border border-[#2c4b8b] rounded-md shadow-sm font-['Montserrat'] font-light hover:bg-[#c10076] hover:border-[#c10076] transition-colors focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-[#c10076]" id="btnItinerarioSabre">Itinerario Sabre</button>
+    </div>
+    
+    <div class="w-[900px]" id="tabla-completa">
+        <div class="my-4" id="flight-table"></div>
+    </div>      
+
+    <div class="mb-12 ml-2.5 flex">
+        <button 
+            type="button" 
+            class="hidden w-[200px] flex items-center justify-center px-4 h-10 bg-[rgb(57,138,57)] text-white rounded-md shadow-sm hover:bg-[rgb(45,106,45)] transition-colors" 
+            id="copiar"
+        >
+            Copiar Itinerario
+            <svg class="ml-1.5 -mb-0.5" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="20" height="20" fill="white">
+                <path d="M7.024 3.75c0-.966.784-1.75 1.75-1.75H20.25c.966 0 1.75.784 1.75 1.75v11.498a1.75 1.75 0 0 1-1.75 1.75H8.774a1.75 1.75 0 0 1-1.75-1.75Zm1.75-.25a.25.25 0 0 0-.25.25v11.498c0 .139.112.25.25.25H20.25a.25.25 0 0 0 .25-.25V3.75a.25.25 0 0 0-.25-.25Z"></path>
+                <path d="M1.995 10.749a1.75 1.75 0 0 1 1.75-1.751H5.25a.75.75 0 1 1 0 1.5H3.745a.25.25 0 0 0-.25.25L3.5 20.25c0 .138.111.25.25.25h9.5a.25.25 0 0 0 .25-.25v-1.51a.75.75 0 1 1 1.5 0v1.51A1.75 1.75 0 0 1 13.25 22h-9.5A1.75 1.75 0 0 1 2 20.25l-.005-9.501Z"></path>
+            </svg>
+        </button>
+    </div>
+
+</div>
+<script src="../libs/html2canvas.min.js"></script>
+<script src="../libs/jquery.min.js"></script>
+<script src="../libs/sweetalert2.js"></script>
+<script src="../libs/tailwindscss.js"></script>
+<script src="../libs/clipboard.min.js"></script>
+<script src="../js/script.js"></script>
+<script src="../js/gds.js"></script>
+
+
+  </body>
+</html>
