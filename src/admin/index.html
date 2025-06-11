@@ -7,107 +7,113 @@
 </head>
 <body class="font-sans text-slate-800 font-['Montserrat']">
     <div class="relative flex size-full min-h-screen bg-white flex-col overflow-x-hidden">
-      <div class="layout-container flex h-full grow flex-col">
-          <header class="flex items-center justify-between whitespace-nowrap border-b border-solid border-b-[#e7edf4] px-10 py-3">
-              <div class="flex items-center gap-4 text-[#2C4B8B]">
-                  <div class="size-4 mb-2">
-                      <svg  xmlns="http://www.w3.org/2000/svg"  width="24"  height="24"  viewBox="0 0 24 24"  fill="none"  stroke="currentColor"  stroke-width="2"  stroke-linecap="round"  stroke-linejoin="round"  class="icon icon-tabler icons-tabler-outline icon-tabler-settings-code">
-                          <path stroke="none" d="M0 0h24v24H0z" fill="none"/>
-                          <path d="M11.482 20.924a1.666 1.666 0 0 1 -1.157 -1.241a1.724 1.724 0 0 0 -2.573 -1.066c-1.543 .94 -3.31 -.826 -2.37 -2.37a1.724 1.724 0 0 0 -1.065 -2.572c-1.756 -.426 -1.756 -2.924 0 -3.35a1.724 1.724 0 0 0 1.066 -2.573c-.94 -1.543 .826 -3.31 2.37 -2.37c1 .608 2.296 .07 2.572 -1.065c.426 -1.756 2.924 -1.756 3.35 0a1.724 1.724 0 0 0 2.573 1.066c1.543 -.94 3.31 .826 2.37 2.37a1.724 1.724 0 0 0 1.065 2.572c1.312 .318 1.644 1.794 .995 2.697" />
-                          <path d="M9 12a3 3 0 1 0 6 0a3 3 0 0 0 -6 0" />
-                          <path d="M20 21l2 -2l-2 -2" /><path d="M17 17l-2 2l2 2" />
-                        </svg>
+        <div class="layout-container flex h-full grow flex-col">
+            <header class="flex items-center justify-between whitespace-nowrap border-b border-solid border-b-[#e7edf4] px-10 py-3">
+                <div class="flex items-center gap-4 text-[#2C4B8B]">
+                    <div class="size-4 mb-2">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="icon icon-tabler icons-tabler-outline icon-tabler-settings-code"><path stroke="none" d="M0 0h24v24H0z" fill="none"/><path d="M11.482 20.924a1.666 1.666 0 0 1 -1.157 -1.241a1.724 1.724 0 0 0 -2.573 -1.066c-1.543 .94 -3.31 -.826 -2.37 -2.37a1.724 1.724 0 0 0 -1.065 -2.572c-1.756 -.426 -1.756 -2.924 0 -3.35a1.724 1.724 0 0 0 1.066 -2.573c-.94 -1.543 .826 -3.31 2.37 -2.37c1 .608 2.296 .07 2.572 -1.065c.426 -1.756 2.924 -1.756 3.35 0a1.724 1.724 0 0 0 2.573 1.066c1.543 -.94 3.31 .826 2.37 2.37a1.724 1.724 0 0 0 1.065 2.572c1.312 .318 1.644 1.794 .995 2.697" /><path d="M9 12a3 3 0 1 0 6 0a3 3 0 0 0 -6 0" /><path d="M20 21l2 -2l-2 -2" /><path d="M17 17l-2 2l2 2" /></svg>
                     </div>
                     <h2 class="text-[#2C4B8B] text-lg font-bold leading-tight tracking-[-0.015em]">Administrador Toolbox</h2>
                 </div>
-                <div class="mt-4 sm:mt-0 w-full sm:w-auto">
-                    <input type="text" id="admin-search" placeholder="Buscar herramienta..." 
-                    class="font-['Montserrat'] text-sm form-input flex w-full min-w-0 flex-1 resize-none overflow-hidden rounded-xl text-[#2C4B8B] focus:outline-0 focus:ring-0 border-none bg-[#e7edf4] focus:border-none h-14 placeholder:text-[#49749c] p-4 text-base font-normal leading-normal">
-                </div>
+
             </header>
 
             <div class="container mx-auto p-4 sm:p-6 lg:p-8 font-['Montserrat']">
                 <main class="grid grid-cols-1 lg:grid-cols-5 gap-8 font-['Montserrat']">
-            <div class="lg:col-span-2">
-                <div class="bg-white p-6 rounded-lg shadow-lg sticky top-8">
-                    <h2 id="form-title" class="text-xl font-semibold mb-5 text-[#2C4B8B]">Añadir Nueva Herramienta</h2>
-                    <form id="tool-form" class="space-y-4">
-                        <input type="hidden" id="tool-id">
+                    <div class="lg:col-span-2">
+                        <div class="bg-white p-6 rounded-lg shadow-lg sticky top-8">
+                            <h2 id="form-title" class="text-xl font-semibold mb-5 text-[#2C4B8B]">Añadir Ítem</h2>
+                            <form id="tool-form" class="space-y-4">
+                                <input type="hidden" id="tool-id">
 
-                        <div class="flex max-w-[480px] flex-wrap items-end gap-4 px-4 py-3">
-                            <label for="name" class="flex flex-col min-w-40 flex-1">
-                                <p class="text-[#2C4B8B] text-base font-medium leading-normal pb-2">Nombre</p>
-                                <input required placeholder="Ingresa el título del item"
-                                class="form-input flex w-full min-w-0 flex-1 resize-none overflow-hidden rounded-xl text-[#2C4B8B] focus:outline-0 focus:ring-0 border-none bg-[#e7edf4] focus:border-none h-14 placeholder:text-[#49749c] p-4 text-base font-normal leading-normal"
-                                value=""
-                                type="text" id="name"/>
-                            </label>
-                        </div>
-                        <div class="flex max-w-[480px] flex-wrap items-end gap-4 px-4 py-3">
-                            <label for="url" class="flex flex-col min-w-40 flex-1">
-                                <p class="text-[#2C4B8B] text-base font-medium leading-normal pb-2">URL</p>
-                                <input required placeholder="Indique URL"
-                                class="form-input flex w-full min-w-0 flex-1 resize-none overflow-hidden rounded-xl text-[#2C4B8B] focus:outline-0 focus:ring-0 border-none bg-[#e7edf4] focus:border-none h-14 placeholder:text-[#49749c] p-4 text-base font-normal leading-normal"
-                                value=""
-                                type="url" id="url" required/>
-                            </label>
-                        </div>
-                        <div class="flex max-w-[480px] flex-wrap items-end gap-4 px-4 py-3">
-                            <label for="imageUrl" class="flex flex-col min-w-40 flex-1">
-                                <p class="text-[#2C4B8B] text-base font-medium leading-normal pb-2">URL de la Imagen</p>
-                                <input required placeholder="Indique URL"
-                                class="form-input flex w-full min-w-0 flex-1 resize-none overflow-hidden rounded-xl text-[#2C4B8B] focus:outline-0 focus:ring-0 border-none bg-[#e7edf4] focus:border-none h-14 placeholder:text-[#49749c] p-4 text-base font-normal leading-normal"
-                                value=""
-                                type="url" id="imageUrl" required/>
-                            </label>
-                        </div>
-                        <div class="flex max-w-[480px] flex-wrap items-end gap-4 px-4 py-3">
-                            <label for="category"  class="flex flex-col min-w-40 flex-1">
-                                <p class="text-[#2C4B8B] text-base font-medium leading-normal pb-2">Categoría</p>
-                            <select id="category" required
-                             class="form-input flex w-full min-w-0 flex-1 resize-none overflow-hidden rounded-xl text-[#2C4B8B] focus:outline-0 focus:ring-0 border-none bg-[#e7edf4] focus:border-none h-14  placeholder:text-[#49749c] p-4 text-base font-normal leading-normal">
-                                <option value="desarrollo">Desarrollo</option>
-                                <option value="diseño">Diseño</option>
-                                <option value="productividad">Productividad</option>
-                                <option value="general">General</option>
-                            </select>
-                        </label>
-                    </div>
-                        
-                        <div class="flex justify-stretch flex-1 gap-3 flex-wrap px-4 py-3 justify-end">
-                            <input type="checkbox" id="isActive" checked class="h-4 w-4 text-indigo-600 border-slate-300 rounded focus:ring-indigo-500">
-                            <label for="isActive" class="ml-2 block text-sm text-[#2C4B8B]">Herramienta Activa</label>
-                        </div>
+                                <div>
+                                    <p class="text-[#2C4B8B] text-base font-medium leading-normal pb-2">Título del Ítem</p>
+                                    <input required placeholder="Ingresa el título" id="title" class="form-input flex w-full min-w-0 flex-1 resize-none overflow-hidden rounded-xl text-[#2C4B8B] focus:outline-0 focus:ring-0 border-none bg-[#e7edf4] focus:border-none h-14 placeholder:text-[#49749c] p-4 text-base font-normal leading-normal">
+                                </div>
 
-                        <div class="pt-3 flex space-x-3">
-                            <button type="submit" class="flex min-w-[84px] max-w-[480px] cursor-pointer items-center justify-center overflow-hidden rounded-full h-10 px-4 bg-[#2C4B8B] text-slate-50 text-sm font-bold leading-normal tracking-[0.015em]">
-                                Guardar
-                            </button>
-                            <button type="button" id="cancel-edit-btn" class="hidden flex min-w-[84px] max-w-[480px] cursor-pointer items-center justify-center overflow-hidden rounded-full h-10 px-4 bg-[#2C4B8B] text-slate-50 text-sm font-bold leading-normal tracking-[0.015em]">
-                                Cancelar
-                            </button>
-                        </div>
-                    </form>
-                </div>
-            </div>
+                                <div>
+                                    <p class="text-[#2C4B8B] text-base font-medium leading-normal pb-2">URL (opcional si es un menú padre)</p>
+                                    <input placeholder="https://..." id="url" type="url" class="form-input flex w-full min-w-0 flex-1 resize-none overflow-hidden rounded-xl text-[#2C4B8B] focus:outline-0 focus:ring-0 border-none bg-[#e7edf4] focus:border-none h-14 placeholder:text-[#49749c] p-4 text-base font-normal leading-normal">
+                                </div>
 
-            <div class="lg:col-span-3">
-                <div class="bg-white p-6 rounded-lg shadow-lg">
-                    <h2 class="text-xl font-semibold mb-5 text-[#2C4B8B]">Herramientas Existentes</h2>
-                    <div id="admin-tools-list" class="space-y-3">
-                        <div class="flex justify-between items-center p-3 bg-slate-50 rounded-md animate-pulse">
-                            <span class="text-slate-500">Cargando...</span>
+                                <div>
+                                    <p class="text-[#2C4B8B] text-base font-medium leading-normal pb-2">Icono</p>
+                                    <div class="mt-1 flex items-center gap-3">
+                                        <button type="button" id="icon-gallery-btn" class="flex-grow text-sm font-bold text-slate-50 bg-[#2C4B8B] h-14 px-4 rounded-full hover:opacity-90">Seleccionar Icono</button>
+                                        <div id="icon-preview" class="w-14 h-14 bg-[#e7edf4] rounded-xl flex items-center justify-center text-3xl"></div>
+                                        <input type="hidden" id="icon">
+                                    </div>
+                                </div>
+
+                                <div class="pt-2">
+                                    <label class="flex items-center gap-3 cursor-pointer">
+                                        <input type="checkbox" id="is-submenu" class="h-5 w-5 rounded border-gray-300 text-indigo-600 focus:ring-indigo-500">
+                                        <span class="text-[#2C4B8B] text-base font-medium">¿Es un submenú?</span>
+                                    </label>
+                                </div>
+                                
+                                <div id="parent-menu-container" class="hidden">
+                                    <p class="text-[#2C4B8B] text-base font-medium leading-normal pb-2">Asociar a Menú Principal</p>
+                                    <select id="parent-id" title="Asociar a Menú Principal" class="form-input flex w-full min-w-0 flex-1 resize-none overflow-hidden rounded-xl text-[#2C4B8B] focus:outline-0 focus:ring-0 border-none bg-[#e7edf4] focus:border-none h-14 placeholder:text-[#49749c] p-4 text-base font-normal leading-normal"></select>
+                                </div>
+
+                                <div class="grid grid-cols-2 gap-4 pt-2">
+                                    <div>
+                                        <p class="text-[#2C4B8B] text-base font-medium leading-normal pb-2">Fondo</p>
+                                        <input type="color" id="bg-color" value="#ffffff" title="Selecciona el color de fondo" placeholder="#ffffff" class="w-full h-14 p-1 border-none bg-[#e7edf4] rounded-xl cursor-pointer">
+                                    </div>
+                                    <div>
+                                        <p class="text-[#2C4B8B] text-base font-medium leading-normal pb-2">Texto</p>
+                                        <input type="color" id="text-color" value="#000000" title="Selecciona el color del texto" placeholder="#000000" class="w-full h-14 p-1 border-none bg-[#e7edf4] rounded-xl cursor-pointer">
+                                    </div>
+                                </div>
+
+                                <div class="pt-3 flex space-x-3">
+                                    <button type="submit" class="flex flex-1 min-w-[84px] cursor-pointer items-center justify-center overflow-hidden rounded-full h-10 px-4 bg-[#2C4B8B] text-slate-50 text-sm font-bold leading-normal tracking-[0.015em] hover:opacity-90 disabled:opacity-50">
+                                        Guardar
+                                    </button>
+                                    <button type="button" id="cancel-edit-btn" class="hidden flex-1 min-w-[84px] cursor-pointer items-center justify-center overflow-hidden rounded-full h-10 px-4 bg-slate-600 text-slate-50 text-sm font-bold leading-normal tracking-[0.015em] hover:opacity-90">
+                                        Cancelar
+                                    </button>
+                                </div>
+                            </form>
                         </div>
                     </div>
-                </div>
-            </div>
 
-        </main>
+                    <div class="lg:col-span-3">
+                        <div class="bg-white p-6 rounded-lg shadow-lg">
+                            <h2 class="text-xl font-semibold mb-5 text-[#2C4B8B]">Previsualización y Orden</h2>
+                            <div id="menu-preview-list" class="space-y-3">
+                                <div class="flex justify-between items-center p-3 bg-slate-50 rounded-md animate-pulse">
+                                    <span class="text-slate-500">Cargando...</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </main>
+            </div>
+        </div>
     </div>
-      </div>
-</div>
+    
+ <div id="icon-modal" class="hidden fixed inset-0 bg-black bg-opacity-50 z-50 flex justify-center items-center p-4">
+        <div class="bg-white p-6 rounded-lg shadow-xl max-w-2xl w-full flex flex-col max-h-[80vh]">
+            <h3 class="text-lg font-semibold mb-2 text-[#2C4B8B] flex-shrink-0">Selecciona un Icono</h3>
+            
+            <div class="mb-4 flex-shrink-0">
+                <input type="text" id="icon-search-input" placeholder="Buscar por nombre (ej: user, arrow, brand)..." class="font-['Montserrat'] text-sm form-input flex w-full min-w-0 flex-1 resize-none overflow-hidden rounded-xl text-[#2C4B8B] focus:outline-0 focus:ring-0 border-none bg-[#e7edf4] focus:border-none h-14 placeholder:text-[#49749c] p-4 text-base font-normal leading-normal">
+            </div>
+
+            <div class="overflow-y-auto">
+                <div id="icon-gallery" class="grid grid-cols-6 sm:grid-cols-8 md:grid-cols-10 gap-4 text-3xl p-1">
+                    </div>
+            </div>
+
+            <button id="close-modal-btn" class="mt-6 flex self-start min-w-[84px] cursor-pointer items-center justify-center overflow-hidden rounded-full h-10 px-4 bg-slate-600 text-slate-50 text-sm font-bold leading-normal tracking-[0.015em] hover:opacity-90 flex-shrink-0">Cerrar</button>
+        </div>
+    </div>
+
     <script src="../libs/sweetalert2.js"></script>
-    <script src="../libs/tailwindscss.js"></script>
+    <script src="../libs/tailwindscss.js"></script> 
     <script type="module" src="admin.js"></script>
 </body>
 </html>
