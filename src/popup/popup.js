@@ -35,13 +35,13 @@ function createMenuItemElement(item, subItems) {
     const wrapper = document.createElement('div');
     
     // **AQUÍ SE USA TU DISEÑO COMO PLANTILLA**
-    const iconHTML = item.icon || `<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#2C4B8B" stroke-width="2"><circle cx="12" cy="12" r="10"></circle><line x1="12" y1="8" x2="12" y2="12"></line><line x1="12" y1="16" x2="12.01" y2="16"></line></svg>`;
+    const iconHTML = item.icon || `<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#2C4B8B" stroke-width="2" class="brq oc se ur"><circle cx="12" cy="12" r="10"></circle><line x1="12" y1="8" x2="12" y2="12"></line><line x1="12" y1="16" x2="12.01" y2="16"></line></svg>`;
     const title = item.title || 'Sin Título';
 
     // Parte del botón visible
     const buttonHTML = `
-        <div data-toggle-submenu="${item.id}" class="text-center hover:bg-slate-100 w-full border-b inline-flex justify-between pb-[10px] pt-[10px] cursor-pointer">
-            <div class="inline-flex items-center text-sm font-semibold leading-6 text-gray-900">
+        <div data-toggle-submenu="${item.id}" class="text-center hover:bg-slate-100 w-full border-b inline-flex grid grid-cols-2 gap-48 pb-[10px] pt-[10px]">
+            <div class="m-2 inline-flex items-center text-sm font-semibold leading-6 text-gray-900">
                 <div class="brq oc se ur mr-[20px] w-[24px] h-[24px] flex items-center justify-center" style="color: ${item.text_color};">
                     ${iconHTML}
                 </div>
@@ -249,7 +249,7 @@ document.getElementById('generar-chanchito').addEventListener('click', function(
     const top = 500;
     const features = `width=${width},height=${height},top=${top},left=${left},resizable=yes,scrollbars=yes,status=yes`;
     
-    window.open('/index.html', 'popupWindow', features);
+    window.open('../routes/itinerario.html', 'popupWindow', features);
 });
 
 document.getElementById('open-chatbot').addEventListener('click', function() {
@@ -259,7 +259,7 @@ document.getElementById('open-chatbot').addEventListener('click', function() {
     const top = 500;
     const features = `width=${width},height=${height},top=${top},left=${left},resizable=yes,scrollbars=yes,status=yes`;
     
-    window.open('/iframe.html', 'popupWindow', features);
+    window.open('../routes/chatbot.html', 'popupWindow', features);
 });
 
 document.getElementById('transacciones').addEventListener('click', function() {
@@ -269,7 +269,7 @@ document.getElementById('transacciones').addEventListener('click', function() {
     const top = 500;
     const features = `width=${width},height=${height},top=${top},left=${left},resizable=yes,scrollbars=yes,status=yes`;
     
-    window.open('/gdsCompare.html', 'popupWindow', features);
+    window.open('../routes/gdsCompare.html', 'popupWindow', features);
 });
 
 // document.getElementById('gwc-form-button').addEventListener('click', function() {
@@ -279,7 +279,7 @@ document.getElementById('transacciones').addEventListener('click', function() {
 //    const top = 500;
 //    const features = `width=${width},height=${height},top=${top},left=${left},resizable=yes,scrollbars=yes,status=yes`;
 
-//    window.open('iframe-forms.html', 'popupWindow', features);
+//    window.open('../routes/formSugerencias.html', 'popupWindow', features);
     
 //});
 
