@@ -252,6 +252,16 @@ document.getElementById('generar-chanchito').addEventListener('click', function(
     window.open('../routes/itinerario.html', 'popupWindow', features);
 });
 
+document.getElementById('login').addEventListener('click', function() {
+    const width = 600;
+    const height = 400;
+    const left = 1000;
+    const top = 100;
+    const features = `width=${width},height=${height},top=${top},left=${left},resizable=yes,scrollbars=yes,status=yes`;
+    
+    window.open('../routes/login.html', 'popupWindow', features);
+});
+
 document.getElementById('open-chatbot').addEventListener('click', function() {
     const width = 430;
     const height = 560;
