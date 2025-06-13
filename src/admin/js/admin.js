@@ -2,7 +2,28 @@ import { supabase } from '../../supabase/client.js';
 import { ICONS_SVG } from '../../libs/icons.js';
 
 // =================================================================================
-// 1. DECLARACIÓN DE ELEMENTOS DEL DOM (Sin cambios)
+// 0. SEGURIDAD Y AUTENTICACIÓN
+// =================================================================================
+
+(async function checkAuth() {
+    const { data: { session }, error } = await supabase.auth.getSession();
+    
+    if (error) {
+        console.error("Error al obtener la sesión:", error);
+        // Si hay un error, por seguridad redirigimos al login
+        window.location.href = '../login/index.html';
+        return;
+    }
+    
+    if (!session) {
+        // Si no hay sesión de usuario, redirigir a la página de login
+        window.location.href = '../login/index.html';
+    }
+    // Si hay una sesión, el resto del script se ejecuta normalmente.
+})();
+
+// =================================================================================
+// 1. DECLARACIÓN DE ELEMENTOS DEL DOM 
 // =================================================================================
 const form = document.getElementById('tool-form');
 const formTitle = document.getElementById('form-title');
@@ -24,9 +45,10 @@ const iconGalleryBtn = document.getElementById('icon-gallery-btn');
 const closeIconModalBtn = document.getElementById('close-modal-btn');
 const iconGallery = document.getElementById('icon-gallery');
 const iconSearchInput = document.getElementById('icon-search-input');
+const elementIdInput = document.getElementById('element_id'); 
 
 // =================================================================================
-// 2. ESTADO DE LA APLICACIÓN (Sin cambios)
+// 2. ESTADO DE LA APLICACIÓN
 // =================================================================================
 let allItems = [];
 
@@ -34,7 +56,7 @@ let allItems = [];
 // 3. DEFINICIÓN DE FUNCIONES
 // =================================================================================
 
-// --- Lógica de Iconos (Sin cambios) ---
+// --- Lógica de Iconos ---
 function initializeIconGallery(searchTerm = '') {
     iconGallery.innerHTML = '';
     const searchTermLower = searchTerm.toLowerCase();
@@ -59,7 +81,7 @@ function selectIcon(iconSvg) {
     iconModal.classList.add('hidden');
 }
 
-// --- Renderizado y UI (Sin cambios) ---
+// --- Renderizado y UI ---
 function renderMenuPreview() {
     menuPreviewList.innerHTML = '';
     const mainItems = allItems.filter(item => !item.parent_id).sort((a,b) => a.order - b.order);
@@ -130,6 +152,7 @@ function populateParentMenuDropdown() {
 function resetFormState() {
     form.reset();
     toolIdInput.value = '';
+    elementIdInput.value = '';
     formTitle.textContent = 'Añadir Ítem';
     iconPreview.innerHTML = '';
     isSubmenuCheckbox.checked = false;
@@ -159,6 +182,7 @@ function handleEdit(id) {
     formTitle.textContent = 'Editar Ítem';
     toolIdInput.value = item.id;
     titleInput.value = item.title;
+    elementIdInput.value = item.element_id;
     urlInput.value = item.url;
     iconInput.value = item.icon;
     iconPreview.innerHTML = item.icon || '';
@@ -179,7 +203,7 @@ async function handleDelete(id) {
         if (error) { Swal.fire('Error', 'No se pudo eliminar.', 'error'); } 
         else {
             Swal.fire('¡Eliminado!', 'El ítem ha sido eliminado.', 'success');
-            await reorderAfterDelete(); // **NUEVO:** Reordenar después de borrar
+            await reorderAfterDelete(); 
             loadMenuItems();
         }
     }
@@ -190,7 +214,6 @@ async function handleCopy(id) {
     if (!itemToCopy) return;
     const { id: _, created_at, ...newItemData } = itemToCopy;
     newItemData.title += ' (Copia)';
-    // **CORREGIDO:** Asigna el orden correctamente al final de su grupo de hermanos
     const siblings = allItems.filter(i => i.parent_id == newItemData.parent_id);
     newItemData.order = siblings.length;
     const { error } = await supabase.from('tools').insert([newItemData]).select();
@@ -201,7 +224,6 @@ async function handleCopy(id) {
     }
 }
 
-// **FUNCIÓN COMPLETAMENTE REESCRITA Y CORREGIDA**
 async function handleMove(id, direction) {
     const itemToMove = allItems.find(i => i.id == id);
     if (!itemToMove) return;
@@ -242,7 +264,6 @@ async function handleMove(id, direction) {
     }
 }
 
-// **NUEVA FUNCIÓN** para mantener el orden consistente después de borrar
 async function reorderAfterDelete() {
     const allParentIds = [null, ...new Set(allItems.map(i => i.parent_id).filter(id => id))];
     const allUpdates = [];
@@ -286,8 +307,14 @@ form.addEventListener('submit', async (e) => {
     }
 
     const formData = {
-        title: titleInput.value, url: urlInput.value || null, icon: iconInput.value,
-        parent_id: parentId, bg_color: bgColorInput.value, text_color: textColorInput.value, order: order,
+        title: titleInput.value, 
+        element_id: elementIdInput.value || null, 
+        url: urlInput.value || null, 
+        icon: iconInput.value,
+        parent_id: parentId, 
+        bg_color: bgColorInput.value, 
+        text_color: textColorInput.value, 
+        order: order,
     };
 
     const { error } = await supabase.from('tools').upsert(toolIdInput.value ? { id: toolIdInput.value, ...formData } : formData);
@@ -295,6 +322,7 @@ form.addEventListener('submit', async (e) => {
     if (error) {
         console.error('Error al guardar:', error);
         Swal.fire('Error', 'No se pudo guardar el ítem. Revisa la consola.', 'error');
+        
     } else {
         Swal.fire('¡Éxito!', 'Ítem guardado correctamente.', 'success');
         resetFormState();

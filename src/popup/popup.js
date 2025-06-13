@@ -31,62 +31,77 @@ function renderMenu() {
 function createMenuItemElement(item, subItems) {
     const hasSubmenus = subItems.length > 0;
     
-    // Contenedor principal para un ítem del menú
-    const wrapper = document.createElement('div');
-    
-    // **AQUÍ SE USA TU DISEÑO COMO PLANTILLA**
+    // Contenedor principal para un ítem del menú.
+    // Usamos 'a' (enlace) si no tiene submenús y tiene URL.
+    // Usamos 'div' si es un menú padre clicable.
+    const wrapperTag = !hasSubmenus && item.url ? 'a' : 'div';
+    const wrapper = document.createElement(wrapperTag);
+
+    // Asigna el ID personalizado solo si existe en la base de datos.
+    if (item.element_id) {
+        wrapper.id = item.element_id;
+    }
+
+    if (wrapper.tagName === 'A') {
+        wrapper.href = item.url;
+        wrapper.target = '_blank';
+    }
+
     const iconHTML = item.icon || `<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#2C4B8B" stroke-width="2" class="brq oc se ur"><circle cx="12" cy="12" r="10"></circle><line x1="12" y1="8" x2="12" y2="12"></line><line x1="12" y1="16" x2="12.01" y2="16"></line></svg>`;
     const title = item.title || 'Sin Título';
 
-    // Parte del botón visible
-    const buttonHTML = `
-        <div data-toggle-submenu="${item.id}" class="text-center hover:bg-slate-100 w-full border-b inline-flex grid grid-cols-2 gap-48 pb-[10px] pt-[10px]">
-            <div class="m-2 inline-flex items-center text-sm font-semibold leading-6 text-gray-900">
-                <div class="brq oc se ur mr-[20px] w-[24px] h-[24px] flex items-center justify-center" style="color: ${item.text_color};">
-                    ${iconHTML}
-                </div>
-                <span style="color: ${item.text_color};">${title}</span>
+    // Construimos el HTML interno del botón
+    const buttonInnerHTML = `
+        <div class="m-2 inline-flex items-center text-sm font-semibold leading-6 text-gray-900">
+            <div class="brq oc se ur mr-[20px] w-[24px] h-[24px] flex items-center justify-center" style="color: ${item.text_color};">
+                ${iconHTML}
             </div>
-            <div class="flex items-center">
-                <svg class="submenu-arrow h-4 w-4 transition-transform" viewBox="0 0 24 24" fill="#2C4B8B" aria-hidden="true">
-                    <path fill-rule="evenodd" d="M16.28 11.47a.75.75 0 0 1 0 1.06l-7.5 7.5a.75.75 0 0 1-1.06-1.06L14.69 12 7.72 5.03a.75.75 0 0 1 1.06-1.06l7.5 7.5Z" clip-rule="evenodd" />
-                </svg>
-            </div>
+            <span style="color: ${item.text_color};">${title}</span>
+        </div>
+        <div class="flex items-center">
+            ${hasSubmenus ? `
+            <svg class="submenu-arrow h-4 w-4 transition-transform" viewBox="0 0 24 24" fill="#2C4B8B" aria-hidden="true">
+                <path fill-rule="evenodd" d="M16.28 11.47a.75.75 0 0 1 0 1.06l-7.5 7.5a.75.75 0 0 1-1.06-1.06L14.69 12 7.72 5.03a.75.75 0 0 1 1.06-1.06l7.5 7.5Z" clip-rule="evenodd" />
+            </svg>
+            ` : ''}
         </div>
     `;
 
-    // Parte del menú desplegable (si tiene subítems)
-    let dropdownHTML = '';
+    // Botón visible
+    const button = document.createElement('div');
+    button.dataset.toggleSubmenu = item.id;
+    button.className = "text-center hover:bg-slate-100 w-full border-b inline-flex justify-between pb-[10px] pt-[10px]";
+    if(hasSubmenus) button.classList.add('cursor-pointer');
+    button.innerHTML = buttonInnerHTML;
+    
+    wrapper.appendChild(button);
+
+    // Menú desplegable
     if (hasSubmenus) {
         const subItemsHTML = subItems.map(sub => `
             <li>
-                <a href="${sub.url}" target="_blank" class="axs blf big bqe lx aaf adu aqp avz awo awf" style="color: ${sub.text_color}; background-color: ${sub.bg_color};">
+                <a href="${sub.url}" id="${sub.element_id || ''}" target="_blank" class="axs blf big bqe lx aaf adu aqp avz awo awf" style="color: ${sub.text_color}; background-color: ${sub.bg_color};">
                     <div class="axo brq oc se ur w-[24px] h-[24px] flex items-center justify-center">${sub.icon}</div>
                     ${sub.title}
                 </a>
             </li>
         `).join('');
 
-        dropdownHTML = `
-            <div data-submenu-for="${item.id}" class="hidden submenu-container">
-                <div class="w-full flex-auto overflow-hidden rounded-b-lg bg-white text-sm leading-6">
-                    <nav class="lx um yr pl-[20px] pr-[10px] mt-[10px] mb-[20px]">
-                        <ul role="list" class="lx um yr">
-                            ${subItemsHTML}
-                        </ul>
-                    </nav>
-                </div>
+        const dropdown = document.createElement('div');
+        dropdown.dataset.submenuFor = item.id;
+        dropdown.className = "hidden submenu-container";
+        dropdown.innerHTML = `
+            <div class="w-full flex-auto overflow-hidden rounded-b-lg bg-white text-sm leading-6">
+                <nav class="lx um yr pl-[20px] pr-[10px] mt-[10px] mb-[20px]">
+                    <ul role="list" class="lx um yr">
+                        ${subItemsHTML}
+                    </ul>
+                </nav>
             </div>
         `;
-    } else {
-        // Si no hay submenús, el botón principal es un enlace directo
-        wrapper.innerHTML = `<a href="${item.url}" target="_blank">${buttonHTML}</a>`;
+        wrapper.appendChild(dropdown);
     }
     
-    if(hasSubmenus){
-        wrapper.innerHTML = buttonHTML + dropdownHTML;
-    }
-
     return wrapper;
 }
 
@@ -252,10 +267,11 @@ document.getElementById('generar-chanchito').addEventListener('click', function(
     window.open('../routes/itinerario.html', 'popupWindow', features);
 });
 
+
 document.getElementById('login').addEventListener('click', function() {
-    const width = 600;
-    const height = 400;
-    const left = 1000;
+    const width = 800;
+    const height = 600;
+    const left = -500;
     const top = 100;
     const features = `width=${width},height=${height},top=${top},left=${left},resizable=yes,scrollbars=yes,status=yes`;
     
@@ -281,7 +297,24 @@ document.getElementById('transacciones').addEventListener('click', function() {
     
     window.open('../routes/gdsCompare.html', 'popupWindow', features);
 });
+document.addEventListener('DOMContentLoaded', function() {    
+    const chanchitoButton = document.getElementById('chanchito');
 
+    if (chanchitoButton) {
+        chanchitoButton.addEventListener('click', function() {
+            const width = 1000;
+            const height = 800;
+            const left = 5000;
+            const top = 500;
+            const features = `width=${width},height=${height},top=${top},left=${left},resizable=yes,scrollbars=yes,status=yes`;
+            
+            window.open('../routes/itinerario.html', 'popupWindow', features);
+        });
+    } else {
+        console.warn('El botón con id "chanchito" no se encontró en la página.');
+    }
+
+});
 // document.getElementById('gwc-form-button').addEventListener('click', function() {
 //    const width = 620;
 //    const height = 850;

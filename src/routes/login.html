@@ -1,11 +1,57 @@
 <!DOCTYPE html>
-<html lang="es">
+<html lang="es" class="bg-slate-50">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Login</title>
+    <title>Login - Admin Toolbox</title>
+    <script src="../libs/tailwindscss.js"></script>
+    <link rel="stylesheet" href="/src/css/styles.css">
+
 </head>
-<body>
+<body class="font-['Montserrat'] bg-white flex items-center justify-center min-h-screen">
+
+    <div class="w-full max-w-md p-8 space-y-8 bg-white border rounded-2xl shadow-lg">
+        <div>
+            <h2 class="mt-6 text-center text-3xl font-bold tracking-tight text-[#2C4B8B]">
+                Acceso al Administrador
+            </h2>
+        </div>
+        <form id="login-form" class="mt-8 space-y-6">
+            <div class="rounded-md shadow-sm -space-y-px">
+                <div>
+                    <label for="email-address" class="sr-only">Email</label>
+                    <input id="email-address" name="email" type="email" autocomplete="email" required
+                        class="form-input flex w-full min-w-0 flex-1 resize-none overflow-hidden rounded-xl text-[#2C4B8B] focus:outline-0 focus:ring-0 border-none bg-[#e7edf4] focus:border-none h-14 placeholder:text-[#49749c] p-4 text-base font-normal leading-normal"
+                        placeholder="Email">
+                </div>
+                <div>
+                    <label for="password" class="sr-only">Contraseña</label>
+                    <input id="password" name="password" type="password" autocomplete="current-password" required
+                        class="form-input mt-4 flex w-full min-w-0 flex-1 resize-none overflow-hidden rounded-xl text-[#2C4B8B] focus:outline-0 focus:ring-0 border-none bg-[#e7edf4] focus:border-none h-14 placeholder:text-[#49749c] p-4 text-base font-normal leading-normal"
+                        placeholder="Contraseña">
+                </div>
+            </div>
+
+            <div id="error-message" class="text-red-500 text-sm text-center"></div>
+
+            <div>
+                <button type="submit"
+                    id="login-button"
+                    class="group relative w-full flex justify-center py-3 px-4 border border-transparent text-sm font-bold rounded-full text-white bg-[#2C4B8B] hover:opacity-90 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500 disabled:opacity-50">
+                    <span id="button-text">Iniciar Sesión</span>
+                    <span id="button-loader" class="hidden">
+                        <svg class="animate-spin h-5 w-5 text-white" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
+                            <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle>
+                            <path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
+                        </svg>
+                    </span>
+                </button>
+            </div>
+        </form>
+    </div>
+
+  
     
+    <script type="module" src="../js/login.js"></script>
 </body>
 </html>
