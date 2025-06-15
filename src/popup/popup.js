@@ -1,331 +1,178 @@
 import { supabase } from '../supabase/client.js';
 
+// =================================================================================
+// LÓGICA DEL MENÚ DINÁMICO (ARQUITECTURA BASADA EN BOTONES)
+// =================================================================================
 
-// --- ELEMENTOS DEL DOM ---
-const toolsContainer = document.getElementById('tools-container');
-const loadingIndicator = document.getElementById('loading-indicator');
+async function fetchAndRenderMenu() {
+    const dynamicMenuContainer = document.getElementById('tools-container');
+    if (!dynamicMenuContainer) return;
 
-// --- ESTADO ---
-let allItems = [];
+    const { data: allItems, error } = await supabase.from('tools').select('*').eq('isActive', true).order('order');
 
-// --- FUNCIONES DE RENDERIZADO ---
-
-function renderMenu() {
-    if (loadingIndicator) loadingIndicator.style.display = 'none';
-    toolsContainer.innerHTML = ''; // Limpiar
-
-    const mainItems = allItems.filter(item => !item.parent_id).sort((a,b) => a.order - b.order);
-
-    if (mainItems.length === 0) {
-        toolsContainer.innerHTML = `<p class="text-center text-slate-400 p-4">No hay herramientas configuradas.</p>`;
+    if (error) {
+        console.error("Error al cargar el menú:", error);
+        dynamicMenuContainer.innerHTML = `<p class="text-center text-red-500 p-2">Error al cargar el menú</p>`;
         return;
     }
 
+    dynamicMenuContainer.innerHTML = '';
+    const mainItems = allItems.filter(item => !item.parent_id);
+
     mainItems.forEach(item => {
-        const subItems = allItems.filter(sub => sub.parent_id === item.id).sort((a,b) => a.order - b.order);
-        const itemEl = createMenuItemElement(item, subItems);
-        toolsContainer.appendChild(itemEl);
+        const subItems = allItems.filter(sub => sub.parent_id === item.id);
+        const menuItemElement = createMenuItemHTML(item, subItems);
+        dynamicMenuContainer.appendChild(menuItemElement);
     });
+
+    attachActionListeners(allItems);
 }
 
-function createMenuItemElement(item, subItems) {
+function createMenuItemHTML(item, subItems) {
     const hasSubmenus = subItems.length > 0;
+    const wrapper = document.createElement('div');
+
+    // 1. SIEMPRE creamos un <button> como elemento principal.
+    const mainButton = document.createElement('button');
+    mainButton.type = 'button';
+    mainButton.className = "text-center hover:bg-slate-100 w-full border-b inline-flex justify-between pb-[15px] pt-[15px] items-center";
     
-    // Contenedor principal para un ítem del menú.
-    // Usamos 'a' (enlace) si no tiene submenús y tiene URL.
-    // Usamos 'div' si es un menú padre clicable.
-    const wrapperTag = !hasSubmenus && item.url ? 'a' : 'div';
-    const wrapper = document.createElement(wrapperTag);
+    // 2. Asignamos atributos de datos para que el JS sepa qué hacer.
+    if (item.element_id) { mainButton.id = item.element_id; }
+    if (item.url) { mainButton.dataset.url = item.url; }
+    if (hasSubmenus) { mainButton.dataset.toggleId = item.id; }
 
-    // Asigna el ID personalizado solo si existe en la base de datos.
-    if (item.element_id) {
-        wrapper.id = item.element_id;
-    }
-
-    if (wrapper.tagName === 'A') {
-        wrapper.href = item.url;
-        wrapper.target = '_blank';
-    }
-
-    const iconHTML = item.icon || `<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#2C4B8B" stroke-width="2" class="brq oc se ur"><circle cx="12" cy="12" r="10"></circle><line x1="12" y1="8" x2="12" y2="12"></line><line x1="12" y1="16" x2="12.01" y2="16"></line></svg>`;
+    // 3. Construimos el contenido visual del botón
+    const iconHTML = item.icon || `<svg ...></svg>`;
     const title = item.title || 'Sin Título';
-
-    // Construimos el HTML interno del botón
-    const buttonInnerHTML = `
-        <div class="m-2 inline-flex items-center text-sm font-semibold leading-6 text-gray-900">
-            <div class="brq oc se ur mr-[20px] w-[24px] h-[24px] flex items-center justify-center" style="color: ${item.text_color};">
+    mainButton.innerHTML = `
+        <span class="inline-flex items-center text-sm font-semibold leading-6 text-gray-900 pointer-events-none">
+            <span class="brq oc se ur mr-[20px] w-[24px] h-[24px] flex items-center justify-center" style="color: ${item.text_color};">
                 ${iconHTML}
-            </div>
+            </span>
             <span style="color: ${item.text_color};">${title}</span>
-        </div>
-        <div class="flex items-center">
-            ${hasSubmenus ? `
-            <svg class="submenu-arrow h-4 w-4 transition-transform" viewBox="0 0 24 24" fill="#2C4B8B" aria-hidden="true">
+        </span>
+        <span class="flex items-center pointer-events-none">
+            <svg data-arrow-id="${item.id}" class="h-4 w-4 transition-transform ${hasSubmenus ? '' : 'hidden'}" viewBox="0 0 24 24" fill="#2C4B8B">
                 <path fill-rule="evenodd" d="M16.28 11.47a.75.75 0 0 1 0 1.06l-7.5 7.5a.75.75 0 0 1-1.06-1.06L14.69 12 7.72 5.03a.75.75 0 0 1 1.06-1.06l7.5 7.5Z" clip-rule="evenodd" />
             </svg>
-            ` : ''}
-        </div>
+        </span>
     `;
+    wrapper.appendChild(mainButton);
 
-    // Botón visible
-    const button = document.createElement('div');
-    button.dataset.toggleSubmenu = item.id;
-    button.className = "text-center hover:bg-slate-100 w-full border-b inline-flex justify-between pb-[10px] pt-[10px]";
-    if(hasSubmenus) button.classList.add('cursor-pointer');
-    button.innerHTML = buttonInnerHTML;
-    
-    wrapper.appendChild(button);
-
-    // Menú desplegable
+    // 4. Creamos el desplegable si es necesario
     if (hasSubmenus) {
-        const subItemsHTML = subItems.map(sub => `
-            <li>
-                <a href="${sub.url}" id="${sub.element_id || ''}" target="_blank" class="axs blf big bqe lx aaf adu aqp avz awo awf" style="color: ${sub.text_color}; background-color: ${sub.bg_color};">
-                    <div class="axo brq oc se ur w-[24px] h-[24px] flex items-center justify-center">${sub.icon}</div>
-                    ${sub.title}
-                </a>
-            </li>
-        `).join('');
+        const subItemsHTML = subItems.map(sub => {
+            const subId = sub.element_id ? `id="${sub.element_id}"` : '';
+            const subUrl = sub.url ? sub.url : 'javascript:void(0);';
+
+           
+            return `
+                <li ${subId} >
+                    <a href="${subUrl}"  target="_blank" class="axs blf big bqe lx aaf adu aqp avz awo awf" style="color: ${sub.text_color}; background-color: ${sub.bg_color};">
+                        <div class="axo brq oc se ur w-[24px] h-[24px] flex items-center justify-center">${sub.icon}</div>
+                        ${sub.title}
+                    </a>
+                </li>`;
+        }).join('');
 
         const dropdown = document.createElement('div');
-        dropdown.dataset.submenuFor = item.id;
-        dropdown.className = "hidden submenu-container";
+        dropdown.dataset.dropdownId = item.id;
+        dropdown.className = "hidden";
         dropdown.innerHTML = `
             <div class="w-full flex-auto overflow-hidden rounded-b-lg bg-white text-sm leading-6">
                 <nav class="lx um yr pl-[20px] pr-[10px] mt-[10px] mb-[20px]">
-                    <ul role="list" class="lx um yr">
-                        ${subItemsHTML}
-                    </ul>
+                    <ul role="list" class="lx um yr">${subItemsHTML}</ul>
                 </nav>
             </div>
         `;
         wrapper.appendChild(dropdown);
     }
-    
+
     return wrapper;
 }
 
-
-// --- LÓGICA DE DATOS ---
-async function fetchMenuItems() {
-    const { data, error } = await supabase
-        .from('tools')
-        .select('*')
-        .eq('isActive', true);
-
-    if (error) {
-        console.error("Error al cargar el menú:", error);
-        if (loadingIndicator) loadingIndicator.textContent = "Error al cargar.";
-        return;
-    }
-    
-    allItems = data;
-    renderMenu();
-}
-
-// --- MANEJO DE EVENTOS ---
-toolsContainer.addEventListener('click', (e) => {
-    const toggleButton = e.target.closest('[data-toggle-submenu]');
-    if (toggleButton) {
-        const id = toggleButton.dataset.toggleSubmenu;
-        const submenu = document.querySelector(`[data-submenu-for='${id}']`);
-        const arrow = toggleButton.querySelector('.submenu-arrow');
-        
-        if (submenu) {
-            // Si el ítem principal tiene una URL, no prevenimos la navegación,
-            // permitiendo que el usuario decida si hacer clic en el ítem o en la flecha.
-            // Si no tiene URL, es solo un contenedor.
-            const mainItem = allItems.find(item => item.id == id);
-            if (!mainItem.url) {
-                e.preventDefault();
-            }
-            submenu.classList.toggle('hidden');
-            if (arrow) arrow.style.transform = submenu.classList.contains('hidden') ? 'rotate(0deg)' : 'rotate(90deg)';
-        }
-    }
-});
-
+// =================================================================================
+// INICIALIZACIÓN Y MANEJO DE EVENTOS
+// =================================================================================
 
 document.addEventListener('DOMContentLoaded', function () {
-    const menuButton = document.getElementById('menuButton');
-    const menuDropdown = document.getElementById('menuDropdown');
-    const downIcon = document.getElementById('downIcon');
-    const rightIcon = document.getElementById('rightIcon');
+    
+    // 1. Iniciamos la construcción del menú.
+    fetchAndRenderMenu();
 
-    const menuButtonSrv = document.getElementById('menuButtonSrv');
-    const menuDropdownSrv = document.getElementById('menuDropdownSrv');
-    const downIconSrv = document.getElementById('downIconSrv');
-    const rightIconSrv = document.getElementById('rightIconSrv');
-  
-    menuButton.addEventListener('click', function () {
-      const isExpanded = menuButton.getAttribute('aria-expanded') === 'true';
-      
-      menuButton.setAttribute('aria-expanded', !isExpanded);
-      menuDropdown.classList.toggle('hidden');
-  
-      if (!isExpanded) {
-        menuDropdown.classList.remove('opacity-0', 'translate-y-1');
-        menuDropdown.classList.add('opacity-100', 'translate-y-0', 'transition', 'ease-out', 'duration-200');
-        downIcon.classList.remove('hidden');
-        rightIcon.classList.add('hidden');
-      } else {
-        menuDropdown.classList.remove('opacity-100', 'translate-y-0');
-        menuDropdown.classList.add('opacity-0', 'translate-y-1', 'transition', 'ease-in', 'duration-150');
-        downIcon.classList.add('hidden');
-        rightIcon.classList.remove('hidden');
-      }
-    });
-  
-    menuButtonSrv.addEventListener('click', function () {
-      const isExpanded = menuButtonSrv.getAttribute('aria-expanded') === 'true';
-      
-      menuButtonSrv.setAttribute('aria-expanded', !isExpanded);
-      menuDropdownSrv.classList.toggle('hidden');
-  
-      if (!isExpanded) {
-        menuDropdownSrv.classList.remove('opacity-0', 'translate-y-1');
-        menuDropdownSrv.classList.add('opacity-100', 'translate-y-0', 'transition', 'ease-out', 'duration-200');
-        downIconSrv.classList.remove('hidden');
-        rightIconSrv.classList.add('hidden');
-      } else {
-        menuDropdownSrv.classList.remove('opacity-100', 'translate-y-0');
-        menuDropdownSrv.classList.add('opacity-0', 'translate-y-1', 'transition', 'ease-in', 'duration-150');
-        downIconSrv.classList.add('hidden');
-        rightIconSrv.classList.remove('hidden');
-      }
-    });
-  
-    document.addEventListener('click', function (event) {
-      if (!menuButton.contains(event.target) && !menuDropdown.contains(event.target)) {
-        menuButton.setAttribute('aria-expanded', 'false');
-        menuDropdown.classList.add('hidden');
-        downIcon.classList.add('hidden');
-        rightIcon.classList.remove('hidden');
-      }
-      if (!menuButtonSrv.contains(event.target) && !menuDropdownSrv.contains(event.target)) {
-        menuButtonSrv.setAttribute('aria-expanded', 'false');
-        menuDropdownSrv.classList.add('hidden');
-        downIconSrv.classList.add('hidden');
-        rightIconSrv.classList.remove('hidden');
-      }
-    });
-});
+    // 2. Creamos UN SOLO gestor de clics para el menú dinámico.
+    const dynamicMenuContainer = document.getElementById('tools-container');
+    if (dynamicMenuContainer) {
+        dynamicMenuContainer.addEventListener('click', (e) => {
+            const button = e.target.closest('button');
+            if (!button) return; // Si no se hizo clic en un botón, no hacer nada
 
-function hideElements() {
-    document.querySelectorAll('.container button').forEach(function (button) {
-        if (button) {
-            button.style.display = 'none';
-        }
-    });
-    document.querySelectorAll('.container ').forEach(function (h1) {
-        h1.style.display = 'none';
-    });
-    document.getElementById('reserva-info').style.display = 'none';
-}
+            const url = button.dataset.url;
+            const toggleId = button.dataset.toggleId;
 
-function showElements() {
-    document.querySelectorAll('.container button').forEach(function (button) {
-        if (button) {
-            if (isAuthenticated) {
-                if (button.id === 'login-button') {
-                    button.style.display = 'none';
-                } else {
-                    button.style.display = 'block';
+            // PRIORIDAD 1: Si es un menú para desplegar, su única acción es desplegarse.
+            if (toggleId) {
+                const dropdown = document.querySelector(`[data-dropdown-id="${toggleId}"]`);
+                const arrow = document.querySelector(`[data-arrow-id="${toggleId}"]`);
+                if (dropdown) {
+                    dropdown.classList.toggle('hidden');
+                    if (arrow) {
+                        arrow.style.transform = dropdown.classList.contains('hidden') ? 'rotate(0deg)' : 'rotate(90deg)';
+                    }
                 }
-            } else {
-                button.style.display = 'block';
+            } 
+            // PRIORIDAD 2: Si NO es desplegable pero tiene una URL, se abre la URL.
+            else if (url) {
+                window.open(url, '_blank');
             }
-        }
-    });
-    document.querySelectorAll('.container h1').forEach(function (h1) {
-        h1.style.display = 'block';
-    });
-    document.getElementById('reserva-info').style.display = 'block';
-}
-
-document.getElementById('generar-eticket').addEventListener('click', function () {
-    console.log('Generando eticket.');
-    chrome.tabs.query({ active: true, currentWindow: true }, function (tabs) {
-        chrome.tabs.sendMessage(tabs[0].id, { action: "capturarDatosEticket" });
-    });
-});
-
-document.getElementById('generar-itinerario').addEventListener('click', function () {
-    console.log('Generando itinerario.');
-    chrome.tabs.query({ active: true, currentWindow: true }, function (tabs) {
-        chrome.tabs.sendMessage(tabs[0].id, { action: "capturarDatosItinerario" });
-    });
-});
-
-document.getElementById('generar-chanchito').addEventListener('click', function() {
-    const width = 1000;
-    const height = 800;
-    const left = 5000;
-    const top = 500;
-    const features = `width=${width},height=${height},top=${top},left=${left},resizable=yes,scrollbars=yes,status=yes`;
-    
-    window.open('../routes/itinerario.html', 'popupWindow', features);
-});
-
-
-document.getElementById('login').addEventListener('click', function() {
-    const width = 800;
-    const height = 600;
-    const left = -500;
-    const top = 100;
-    const features = `width=${width},height=${height},top=${top},left=${left},resizable=yes,scrollbars=yes,status=yes`;
-    
-    window.open('../routes/login.html', 'popupWindow', features);
-});
-
-document.getElementById('open-chatbot').addEventListener('click', function() {
-    const width = 430;
-    const height = 560;
-    const left = 5000;
-    const top = 500;
-    const features = `width=${width},height=${height},top=${top},left=${left},resizable=yes,scrollbars=yes,status=yes`;
-    
-    window.open('../routes/chatbot.html', 'popupWindow', features);
-});
-
-document.getElementById('transacciones').addEventListener('click', function() {
-    const width = 1000;
-    const height = 800;
-    const left = 5000;
-    const top = 500;
-    const features = `width=${width},height=${height},top=${top},left=${left},resizable=yes,scrollbars=yes,status=yes`;
-    
-    window.open('../routes/gdsCompare.html', 'popupWindow', features);
-});
-document.addEventListener('DOMContentLoaded', function() {    
-    const chanchitoButton = document.getElementById('chanchito');
-
-    if (chanchitoButton) {
-        chanchitoButton.addEventListener('click', function() {
-            const width = 1000;
-            const height = 800;
-            const left = 5000;
-            const top = 500;
-            const features = `width=${width},height=${height},top=${top},left=${left},resizable=yes,scrollbars=yes,status=yes`;
-            
-            window.open('../routes/itinerario.html', 'popupWindow', features);
         });
-    } else {
-        console.warn('El botón con id "chanchito" no se encontró en la página.');
+    }
+});
+
+// =================================================================================
+// LISTENERS Y FUNCIONES ORIGINALES (para elementos con ID fijos)
+// =================================================================================
+
+function attachActionListeners(allItems) {
+    const generarEticket = document.getElementById('generar-eticket');
+    if (generarEticket) {
+        generarEticket.addEventListener('click', function () {
+            console.log('Generando eticket.');
+            chrome.tabs.query({ active: true, currentWindow: true }, function (tabs) {
+                chrome.tabs.sendMessage(tabs[0].id, { action: "capturarDatosEticket" });
+            });
+        });
     }
 
-});
-// document.getElementById('gwc-form-button').addEventListener('click', function() {
-//    const width = 620;
-//    const height = 850;
-//    const left = 5000;
-//    const top = 500;
-//    const features = `width=${width},height=${height},top=${top},left=${left},resizable=yes,scrollbars=yes,status=yes`;
+    const generarItinerario = document.getElementById('generar-itinerario');
+    if (generarItinerario) {
+        generarItinerario.addEventListener('click', function () {
+            console.log('Generando itinerario.');
+            chrome.tabs.query({ active: true, currentWindow: true }, function (tabs) {
+                chrome.tabs.sendMessage(tabs[0].id, { action: "capturarDatosItinerario" });
+            });
+        });
+    }
 
-//    window.open('../routes/formSugerencias.html', 'popupWindow', features);
-    
-//});
+    const generarChanchito = document.getElementById('generar-chanchito');
+    if (generarChanchito) {
+        generarChanchito.addEventListener('click', function() {
+            window.open('../routes/itinerario.html', 'popupWindow', `width=1000,height=800,top=500,left=5000,resizable=yes,scrollbars=yes,status=yes`);
+        });
+    }
 
+    const openChatbot = document.getElementById('open-chatbot');
+    if (openChatbot) {
+        openChatbot.addEventListener('click', function() {
+            window.open('/iframe.html', 'popupWindow', `width=430,height=560,top=500,left=5000,resizable=yes,scrollbars=yes,status=yes`);
+        });
+    }
 
-// --- INICIALIZACIÓN ---
-document.addEventListener('DOMContentLoaded', fetchMenuItems);
+    const transacciones = document.getElementById('transacciones');
+    if (transacciones) {
+        transacciones.addEventListener('click', function() {
+            window.open('/gdsCompare.html', 'popupWindow', `width=1000,height=800,top=500,left=5000,resizable=yes,scrollbars=yes,status=yes`);
+        });
+    }
+}

@@ -21,7 +21,7 @@
         "default_popup": "src/popup/popup.html"
     },
     "background": {
-        "service_worker": "src/background/background.js"
+        "service_worker": "src/popup/background.js"
     },
     "content_scripts": [
         {

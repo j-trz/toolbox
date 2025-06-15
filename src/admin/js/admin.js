@@ -5,22 +5,22 @@ import { ICONS_SVG } from '../../libs/icons.js';
 // 0. SEGURIDAD Y AUTENTICACIÓN
 // =================================================================================
 
-(async function checkAuth() {
-    const { data: { session }, error } = await supabase.auth.getSession();
+//(async function checkAuth() {
+ //   const { data: { session }, error } = await supabase.auth.getSession();
     
-    if (error) {
-        console.error("Error al obtener la sesión:", error);
+  //  if (error) {
+  //      console.error("Error al obtener la sesión:", error);
         // Si hay un error, por seguridad redirigimos al login
-        window.location.href = '../login/index.html';
-        return;
-    }
+ //       window.location.href = '../login/index.html';
+  //      return;
+ //   }
     
-    if (!session) {
+//    if (!session) {
         // Si no hay sesión de usuario, redirigir a la página de login
-        window.location.href = '../login/index.html';
-    }
+//        window.location.href = '../login/index.html';
+ //   }
     // Si hay una sesión, el resto del script se ejecuta normalmente.
-})();
+//})();
 
 // =================================================================================
 // 1. DECLARACIÓN DE ELEMENTOS DEL DOM 
@@ -183,7 +183,7 @@ function handleEdit(id) {
     toolIdInput.value = item.id;
     titleInput.value = item.title;
     elementIdInput.value = item.element_id;
-    urlInput.value = item.url;
+    urlInput.value = item.url || '#';
     iconInput.value = item.icon;
     iconPreview.innerHTML = item.icon || '';
     bgColorInput.value = item.bg_color || '#ffffff';
