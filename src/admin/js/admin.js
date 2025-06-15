@@ -155,6 +155,8 @@ function resetFormState() {
     elementIdInput.value = '';
     formTitle.textContent = 'Añadir Ítem';
     iconPreview.innerHTML = '';
+    textColorInput.value = '#000000'; 
+    bgColorInput.value = '#FFFFFF';
     isSubmenuCheckbox.checked = false;
     parentMenuContainer.classList.add('hidden');
     cancelBtn.classList.add('hidden');
@@ -357,9 +359,17 @@ menuPreviewList.addEventListener('click', async (e) => {
         }
     }
 });
-iconSearchInput.addEventListener('input', (e) => { initializeIconGallery(e.target.value); });
+iconSearchInput.addEventListener('input', (e) => { 
+    initializeIconGallery(e.target.value); });
 cancelBtn.addEventListener('click', resetFormState);
-isSubmenuCheckbox.addEventListener('change', (e) => { parentMenuContainer.classList.toggle('hidden', !e.target.checked); });
+isSubmenuCheckbox.addEventListener('change', (e) => { 
+    parentMenuContainer.classList.toggle('hidden', !e.target.checked); 
+       if (isChecked) {
+        textColorInput.value = '#4B5563';
+    } else {
+        textColorInput.value = '#000000';
+    }
+});
 iconGalleryBtn.addEventListener('click', () => iconModal.classList.remove('hidden'));
 closeIconModalBtn.addEventListener('click', () => iconModal.classList.add('hidden'));
 
