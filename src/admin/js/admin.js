@@ -5,26 +5,22 @@ import { ICONS_SVG } from '../../libs/icons.js';
 // 0. SEGURIDAD Y AUTENTICACIÓN
 // =================================================================================
 
-//(async function checkAuth() {
- //   const { data: { session }, error } = await supabase.auth.getSession();
-    
-  //  if (error) {
-  //      console.error("Error al obtener la sesión:", error);
-        // Si hay un error, por seguridad redirigimos al login
- //       window.location.href = '../login/index.html';
-  //      return;
- //   }
-    
-//    if (!session) {
-        // Si no hay sesión de usuario, redirigir a la página de login
-//        window.location.href = '../login/index.html';
- //   }
-    // Si hay una sesión, el resto del script se ejecuta normalmente.
-//})();
+(async function checkAuth() {
+    const { data: { session } } = await supabase.auth.getSession();
+    if (!session) {
+        window.location.href = '../login/index.html';
+        return;
+    }
+    // Si hay sesión, continuamos cargando la página
+    initializeApp();
+})();
 
 // =================================================================================
 // 1. DECLARACIÓN DE ELEMENTOS DEL DOM 
 // =================================================================================
+
+async function initializeApp() {
+
 const form = document.getElementById('tool-form');
 const formTitle = document.getElementById('form-title');
 const toolIdInput = document.getElementById('tool-id');
@@ -126,13 +122,50 @@ function createMenuItemElement(item, isSubItem = false, hasSubmenus = false) {
         ${hasSubmenus ? '<span class="submenu-arrow text-sm transition-transform"><svg class="h-4 w-4" viewBox="0 0 24 24" fill="currentColor"><path fill-rule="evenodd" d="M12.53 16.28a.75.75 0 0 1-1.06 0l-7.5-7.5a.75.75 0 0 1 1.06-1.06L12 14.69l6.97-6.97a.75.75 0 1 1 1.06 1.06l-7.5 7.5Z" clip-rule="evenodd" /></svg></span>' : ''}
     `;
     const actionsEl = document.createElement('div');
-    actionsEl.className = 'flex items-center gap-1 text-lg opacity-0 group-hover:opacity-100 transition-opacity';
+    actionsEl.className = 'flex items-center gap-1 text-sm opacity-0 group-hover:opacity-100 transition-opacity';
     actionsEl.innerHTML = `
-        <button class="order-up-btn p-1 hover:bg-slate-200 rounded-full" title="Mover Arriba">🔼</button>
-        <button class="order-down-btn p-1 hover:bg-slate-200 rounded-full" title="Mover Abajo">🔽</button>
-        <button class="edit-btn p-1 hover:bg-slate-200 rounded-full" title="Editar">✏️</button>
-        <button class="copy-btn p-1 hover:bg-slate-200 rounded-full" title="Copiar">📋</button>
-        <button class="delete-btn p-1 hover:bg-slate-200 rounded-full" title="Eliminar">🗑️</button>
+        <button class="order-up-btn p-1 hover:bg-slate-200 rounded-full" title="Mover Arriba">
+        <svg  xmlns="http://www.w3.org/2000/svg"  width="24"  height="24"  viewBox="0 0 24 24"  fill="#017fbf"  
+        class="icon icon-tabler icons-tabler-filled icon-tabler-caret-up w-4 h-4">
+        <path stroke="none" d="M0 0h24v24H0z" fill="none"/>
+        <path d="M11.293 7.293a1 1 0 0 1 1.32 -.083l.094 .083l6 6l.083 .094l.054 .077l.054 .096l.017 .036l.027 .067l.032 .108l.01 .053l.01 .06l.004 .057l.002 .059l-.002 .059l-.005 .058l-.009 .06l-.01 .052l-.032 .108l-.027 .067l-.07 .132l-.065 .09l-.073 .081l-.094 .083l-.077 .054l-.096 .054l-.036 .017l-.067 .027l-.108 .032l-.053 .01l-.06 .01l-.057 .004l-.059 .002h-12c-.852 0 -1.297 -.986 -.783 -1.623l.076 -.084l6 -6z" />
+        </svg>
+        </button>
+        <button class="order-down-btn p-1 hover:bg-slate-200 rounded-full" title="Mover Abajo">
+        <svg  xmlns="http://www.w3.org/2000/svg"  width="24"  height="24"  viewBox="0 0 24 24"  fill="#017fbf"  
+        class="icon icon-tabler icons-tabler-filled icon-tabler-caret-down w-4 h-4">
+        <path stroke="none" d="M0 0h24v24H0z" fill="none"/>
+        <path d="M18 9c.852 0 1.297 .986 .783 1.623l-.076 .084l-6 6a1 1 0 0 1 -1.32 .083l-.094 -.083l-6 -6l-.083 -.094l-.054 -.077l-.054 -.096l-.017 -.036l-.027 -.067l-.032 -.108l-.01 -.053l-.01 -.06l-.004 -.057v-.118l.005 -.058l.009 -.06l.01 -.052l.032 -.108l.027 -.067l.07 -.132l.065 -.09l.073 -.081l.094 -.083l.077 -.054l.096 -.054l.036 -.017l.067 -.027l.108 -.032l.053 -.01l.06 -.01l.057 -.004l12.059 -.002z" />
+        </svg>
+        </button>
+        <button class="edit-btn p-1 hover:bg-slate-200 rounded-full" title="Editar">
+        <svg  xmlns="http://www.w3.org/2000/svg"  width="24"  height="24"  viewBox="0 0 24 24"  fill="none"  stroke="#06cb21"  
+        stroke-width="2"  stroke-linecap="round"  stroke-linejoin="round"  
+        class="icon icon-tabler icons-tabler-outline icon-tabler-pencil w-4 h-4">
+        <path stroke="none" d="M0 0h24v24H0z" fill="none"/>
+        <path d="M4 20h4l10.5 -10.5a2.828 2.828 0 1 0 -4 -4l-10.5 10.5v4" />
+        <path d="M13.5 6.5l4 4" /></svg>
+        </button>
+        <button class="copy-btn p-1 hover:bg-slate-200 rounded-full" title="Copiar">
+        <svg  xmlns="http://www.w3.org/2000/svg"  width="24"  height="24"  viewBox="0 0 24 24"  fill="none"  
+        stroke="#9c9c9c"  stroke-width="2"  stroke-linecap="round"  stroke-linejoin="round"  
+        class="icon icon-tabler icons-tabler-outline icon-tabler-copy w-4 h-4">
+        <path stroke="none" d="M0 0h24v24H0z" fill="none"/>
+        <path d="M7 7m0 2.667a2.667 2.667 0 0 1 2.667 -2.667h8.666a2.667 2.667 0 0 1 2.667 2.667v8.666a2.667 2.667 0 0 1 -2.667 2.667h-8.666a2.667 2.667 0 0 1 -2.667 -2.667z" /><path d="M4.012 16.737a2.005 2.005 0 0 1 -1.012 -1.737v-10c0 -1.1 .9 -2 2 -2h10c.75 0 1.158 .385 1.5 1" />
+        </svg>
+        </button>
+        <button class="delete-btn p-1 hover:bg-slate-200 rounded-full" title="Eliminar">
+        <svg  xmlns="http://www.w3.org/2000/svg"  width="24"  height="24"  viewBox="0 0 24 24"  fill="none"  
+        stroke="#ff0042"  stroke-width="2"  stroke-linecap="round"  stroke-linejoin="round"  
+        class="icon icon-tabler icons-tabler-outline icon-tabler-trash w-4 h-4">
+        <path stroke="none" d="M0 0h24v24H0z" fill="none"/>
+        <path d="M4 7l16 0" />
+        <path d="M10 11l0 6" />
+        <path d="M14 11l0 6" />
+        <path d="M5 7l1 12a2 2 0 0 0 2 2h8a2 2 0 0 0 2 -2l1 -12" />
+        <path d="M9 7v-3a1 1 0 0 1 1 -1h4a1 1 0 0 1 1 1v3" />
+        </svg>
+        </button>
     `;
     wrapper.appendChild(previewEl);
     wrapper.appendChild(actionsEl);
@@ -155,7 +188,7 @@ function resetFormState() {
     elementIdInput.value = '';
     formTitle.textContent = 'Añadir Ítem';
     iconPreview.innerHTML = '';
-    textColorInput.value = '#000000'; 
+    textColorInput.value = '#2C4B8B'; 
     bgColorInput.value = '#FFFFFF';
     isSubmenuCheckbox.checked = false;
     parentMenuContainer.classList.add('hidden');
@@ -185,11 +218,11 @@ function handleEdit(id) {
     toolIdInput.value = item.id;
     titleInput.value = item.title;
     elementIdInput.value = item.element_id;
-    urlInput.value = item.url || '#';
+    urlInput.value = item.url || ' ';
     iconInput.value = item.icon;
     iconPreview.innerHTML = item.icon || '';
     bgColorInput.value = item.bg_color || '#ffffff';
-    textColorInput.value = item.text_color || '#000000';
+    textColorInput.value = item.text_color || '#2C4B8B';
     isSubmenuCheckbox.checked = !!item.parent_id;
     parentMenuContainer.classList.toggle('hidden', !item.parent_id);
     populateParentMenuDropdown();
@@ -230,38 +263,31 @@ async function handleMove(id, direction) {
     const itemToMove = allItems.find(i => i.id == id);
     if (!itemToMove) return;
 
-    // 1. Obtener la lista de "hermanos" (mismo nivel, mismo padre) y ordenarla.
     const siblings = allItems
         .filter(i => i.parent_id === itemToMove.parent_id)
         .sort((a, b) => a.order - b.order);
 
     const currentIndex = siblings.findIndex(i => i.id == id);
 
-    // 2. Mover el elemento en el array local.
     if (direction === 'up' && currentIndex > 0) {
-        // Intercambia el elemento con su vecino anterior
         [siblings[currentIndex], siblings[currentIndex - 1]] = [siblings[currentIndex - 1], siblings[currentIndex]];
     } else if (direction === 'down' && currentIndex < siblings.length - 1) {
-        // Intercambia el elemento con su vecino siguiente
         [siblings[currentIndex], siblings[currentIndex + 1]] = [siblings[currentIndex + 1], siblings[currentIndex]];
     } else {
-        return; // No se puede mover más en esa dirección
+        return; 
     }
 
-    // 3. Re-indexar: Asignar el nuevo orden (0, 1, 2, ...) a toda la lista de hermanos.
     const updates = siblings.map((sibling, index) => ({
         id: sibling.id,
-        order: index // El nuevo orden es simplemente su posición en el array
+        order: index 
     }));
 
-    // 4. Enviar todos los cambios a Supabase en una sola operación.
     const { error } = await supabase.from('tools').upsert(updates);
 
     if (error) {
         console.error("Error al reordenar:", error);
         Swal.fire('Error', 'No se pudo mover el ítem.', 'error');
     } else {
-        // 5. Recargar los datos desde la DB para reflejar el nuevo orden.
         await loadMenuItems();
     }
 }
@@ -291,7 +317,39 @@ async function reorderAfterDelete() {
 // =================================================================================
 // 5. MANEJO DE EVENTOS (EVENT LISTENERS)
 // =================================================================================
+    const logoutButton = document.getElementById('logout-button');
+    if(logoutButton) {
+        logoutButton.addEventListener('click', async () => {
+            await supabase.auth.signOut();
+            window.location.href = '../login/index.html';
+        });
+    }
 
+    // **NUEVO:** Lógica para el formulario de invitación
+    const inviteForm = document.getElementById('invite-user-form');
+    if(inviteForm) {
+        inviteForm.addEventListener('submit', async (e) => {
+            e.preventDefault();
+            const emailToInvite = document.getElementById('invite-email-input').value;
+            
+            // **IMPORTANTE:** La invitación de usuarios es una acción de ADMIN
+            // y debe hacerse a través de una Función de Servidor (Edge Function)
+            // para no exponer claves secretas.
+            
+            const { data, error } = await supabase.functions.invoke('invite-user', {
+                body: { email: emailToInvite },
+            });
+
+            if (error) {
+                console.error("Error al invitar usuario:", error);
+                Swal.fire('Error', `No se pudo invitar al usuario. ${error.message}`, 'error');
+            } else {
+                Swal.fire('¡Éxito!', 'Invitación enviada correctamente.', 'success');
+                inviteForm.reset();
+            }
+        });
+    }
+    
 form.addEventListener('submit', async (e) => {
     e.preventDefault();
     submitBtn.disabled = true;
@@ -367,7 +425,7 @@ isSubmenuCheckbox.addEventListener('change', (e) => {
        if (isChecked) {
         textColorInput.value = '#4B5563';
     } else {
-        textColorInput.value = '#000000';
+        textColorInput.value = '#4B5563';
     }
 });
 iconGalleryBtn.addEventListener('click', () => iconModal.classList.remove('hidden'));
@@ -378,3 +436,4 @@ closeIconModalBtn.addEventListener('click', () => iconModal.classList.add('hidde
 // =================================================================================
 initializeIconGallery();
 loadMenuItems();
+}

@@ -128,6 +128,13 @@ document.addEventListener('DOMContentLoaded', function () {
             }
         });
     }
+
+    const loginButton = document.getElementById('login');
+    if (loginButton) {
+        loginButton.addEventListener('click', function() {
+            window.open('../admin/index.html', '_blank');
+        });
+    }
 });
 
 // =================================================================================
@@ -165,14 +172,14 @@ function attachActionListeners(allItems) {
     const openChatbot = document.getElementById('open-chatbot');
     if (openChatbot) {
         openChatbot.addEventListener('click', function() {
-            window.open('/iframe.html', 'popupWindow', `width=430,height=560,top=500,left=5000,resizable=yes,scrollbars=yes,status=yes`);
+            window.open('../routes/chatbot.html', 'popupWindow', `width=430,height=560,top=500,left=5000,resizable=yes,scrollbars=yes,status=yes`);
         });
     }
 
     const transacciones = document.getElementById('transacciones');
     if (transacciones) {
         transacciones.addEventListener('click', function() {
-            window.open('/gdsCompare.html', 'popupWindow', `width=1000,height=800,top=500,left=5000,resizable=yes,scrollbars=yes,status=yes`);
+            window.open('../routes/gdsCompare.html', 'popupWindow', `width=1000,height=800,top=500,left=5000,resizable=yes,scrollbars=yes,status=yes`);
         });
     }
 }

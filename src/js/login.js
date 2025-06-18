@@ -1,6 +1,5 @@
 import { supabase } from '../supabase/client.js';
 
-// --- ELEMENTOS DEL DOM ---
 const loginForm = document.getElementById('login-form');
 const emailInput = document.getElementById('email-address');
 const passwordInput = document.getElementById('password');
@@ -9,47 +8,49 @@ const loginButton = document.getElementById('login-button');
 const buttonText = document.getElementById('button-text');
 const buttonLoader = document.getElementById('button-loader');
 
-// --- LÓGICA DE LOGIN ---
-
-// Al cargar la página, comprobar si ya hay un usuario logueado
+// Redirigir si ya hay sesión
 document.addEventListener('DOMContentLoaded', async () => {
     const { data: { session } } = await supabase.auth.getSession();
     if (session) {
-        // Si hay sesión, redirigir directamente al admin
-        window.location.href = '../admin/index.html';
+        // **CAMBIO 1:** Abrir admin en una nueva pestaña si ya hay sesión
+            const width = 1025;
+            const height = 768;
+            const left = window.screen.width / 2 - width / 2;
+            const top = window.screen.height / 2 - height / 2;
+            const features = `width=${width},height=${height},top=${top},left=${left},resizable=yes,scrollbars=yes,status=yes`;
+            
+            window.open('../admin/index.html', 'popupWindow', features);
     }
 });
 
-// Manejar el envío del formulario
+// Manejar el login
 loginForm.addEventListener('submit', async (e) => {
     e.preventDefault();
-    
-    // Mostrar estado de carga
-    errorMessageDiv.textContent = '';
-    loginButton.disabled = true;
-    buttonText.classList.add('hidden');
-    buttonLoader.classList.remove('hidden');
+    setLoading(true);
 
-    const email = emailInput.value;
-    const password = passwordInput.value;
-
-    // Iniciar sesión con Supabase
     const { data, error } = await supabase.auth.signInWithPassword({
-        email: email,
-        password: password,
+        email: emailInput.value,
+        password: passwordInput.value,
     });
 
-    // Ocultar estado de carga
-    loginButton.disabled = false;
-    buttonText.classList.remove('hidden');
-    buttonLoader.classList.add('hidden');
+    setLoading(false);
 
     if (error) {
-        // Mostrar mensaje de error
         errorMessageDiv.textContent = 'Email o contraseña incorrectos.';
         console.error('Error de login:', error.message);
-    } else if (data.session) {
-        // Si el login es exitoso, redirigir al panel de admin
-        window.location.href = '../admin/index.html';
+    } else {
+            const width = 1025;
+            const height = 768;
+            const left = window.screen.width / 2 - width / 2;
+            const top = window.screen.height / 2 - height / 2;
+            const features = `width=${width},height=${height},top=${top},left=${left},resizable=yes,scrollbars=yes,status=yes`;
+            
+            window.open('../admin/index.html', 'popupWindow', features);
     }
 });
+
+function setLoading(isLoading) {
+    loginButton.disabled = isLoading;
+    buttonText.classList.toggle('hidden', isLoading);
+    buttonLoader.classList.toggle('hidden', !isLoading);
+}
